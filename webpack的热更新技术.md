@@ -6,6 +6,8 @@
 - Live Reload - 监控本地代码文件，触发打包，通过websocket通知客户端自动刷新页面
 - Hot Module Replacement - 监控热更新代码文件，触发打包，利用异步请求，使客户端局部更新
 
+[Git源码](https://github.com/chris-envas/Study-notes/tree/master/projects/webpack-reload)
+
 ### **Live Reload**
 
 为了使每次代码变更后浏览器的页面能够自动显示最新效果，我们需要**一种通信机制来连接浏览器中的页面与本地代码监控的进程**，在webpack中，我们可以采用`webpack-dev-server`来做到这一点
