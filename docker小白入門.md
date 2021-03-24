@@ -1,31 +1,36 @@
 ### 安装
 
-安装`yum-utils`软件包（提供`yum-config-manager` 实用程序）并设置**稳定的**存储库
+#### Centos环境
 
 ```shell
-yum update && yum install -y yum-utils
-
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-# or
-yum-config-manager --add-repo  http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo 
+# 安装`yum-utils`软件包（提供`yum-config-manager` 实用程序）
+sudo yum update && yum install -y yum-utils
+# 安装源
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+# 查看docker版本
+sudo yum list docker-ce --showduplicates | sort -r
+# 安装
+sudo yum install docker-ce docker-ce-cli containerd.io
 ```
 
-##### 查看`Docker`版本
+#### Ubuntu环境
 
 ```shell
-yum list docker-ce --showduplicates | sort -r
+sudo apt-get update 
+# 安装所需第三方依赖包
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+# 设置源
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
+sudo apt update
+# 安装docker
+sudo apt install docker-ce
 ```
 
-安裝docker
+#### 启动
 
 ```shell
-yum install docker-ce docker-ce-cli containerd.io
-```
-
-启动
-
-```shell
-systemctl start docker
+sudo systemctl start docker
 ```
 
 加载Nginx镜像
@@ -33,14 +38,16 @@ systemctl start docker
 > Docker 首先会检查本地是否有`nginx`这个镜像，如果发现本地没有这个镜像，Docker 就会去 Docker Hub 官方仓库下载此镜像
 
 ```shell
-docker pull nginx
+sudo docker pull nginx
 ```
 
-启动，访问该主机下IP的8080端口
+启动并访问该主机下IP的8080端口
 
 ```shell
-docker run -d -p c:80 --name docker-nginx nginx
+docker run --name nginx-test -p 8080:80 -d nginx
 ```
+
+#### 帮助
 
 常见指令
 
@@ -50,9 +57,9 @@ docker run -d -p c:80 --name docker-nginx nginx
 - -it 作为交互式命令启动
 - -d 将容器放在后台运行 --rm 容器退出后清除资源
 
-查看及停止容器
+查看容器
 
-```
+```shell
 # 查看运行中的容器
 docker ps
  
@@ -62,7 +69,7 @@ docker ps -a
 
 停止容器命令
 
-```
+```shell
 # 通过id直接关闭容器
 # docker kill a0fbf4519279
 # 通过容器名称直接关闭容器
@@ -74,9 +81,18 @@ docker kill docker-nginx
 docker stop docker-nginx
 ```
 
+删除镜像及实例
+
+```shell
+# 镜像删除
+docker image rm image_name
+# 通过id实例删除
+docker rm a0fbf4519279
+```
+
 重新启动容器
 
-```
+```shell
 # 启动容器可通过容器id或者容器名称
 # 通过容器名称启动容器，如果已启动则忽略
 docker start docker-nginx
@@ -140,7 +156,7 @@ Docker 的镜像仓库类似于代码仓库，用来存储和分发 Docker 镜�
 
 Docker是如何工作的？
 
-Docker 使用的是 C/S 结构，即客户端/服务器体系结构。明白了 Docker 客户端与 Docker 服务器进行交互时， Docker 服务端负责构建、运行和分发 Docker 镜像
+Docker 使用的是 C/S 结构，即客户端/服务器体系结构，如下所示：
 
 ```shell
 $ docker version
@@ -174,5 +190,10 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 ```
 
-并且Docker 客户端和服务端可以运行在一台机器上，也可以通过 RESTful 、 stock 或网络接口与远程 Docker 服务端进行通信，甚至还可以使用各种语言的 SDK 与 Docker 服务端交互，详情可以查看[sdks](https://docs.docker.com/engine/api/sdk/)
+Docker 客户端与 Docker 服务端交互， 核心是：Docker 服务端负责构建、运行和分发 Docker 镜像
 
+所里所谓的客户端，我的理解是：**通过RESTful 、 stock 或网络接口与远程 Docker 服务端进行通信**
+
+因此Docker提供了多种语言的支持，我们可以通过编码的方式，构建属于我们自己的客户端!
+
+想要知道Docker支持的语言SDK,点击[传送门](https://docs.docker.com/engine/api/sdk/)
