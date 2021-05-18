@@ -2,7 +2,7 @@
 
 本文旨如何完成CI/CD部署，因此略过Jenkis的安装过程，直接使用[`jenkinsci/blueocean`](https://hub.docker.com/r/jenkinsci/blueocean/) Docker 镜像
 
-[如果你是一名Docker新手，也许你应该先学会安装](https://github.com/chris-envas/Study-notes/blob/master/docker%E5%B0%8F%E7%99%BD%E5%85%A5%E9%96%80.md)
+[如果你是一名Docker新手，你应该先安装](https://github.com/chris-envas/Study-notes/blob/master/docker%E5%B0%8F%E7%99%BD%E5%85%A5%E9%96%80.md)
 
 加载`jenkinsci/blueocean`镜像
 
